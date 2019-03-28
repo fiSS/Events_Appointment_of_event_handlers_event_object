@@ -25,7 +25,8 @@ percentValue = document.querySelector('.choose-percent'),
 yearValue = document.querySelector('.year-value'),
 monthValue = document.querySelector('.month-value'),
 dayValue = document.querySelector('.day-value');
-console.log(yearSavingsValue);
+console.log(expensesBtn);
+
 
 let money, time;
 
@@ -39,15 +40,15 @@ startBtn.addEventListener('click', function() {
     appData.Budget = money;
     appData.timeData = time;
     budgetValue.textContent = money.toFixed();
-    yearValue.value = new Date(Date.parse(time)).getFullYear(); //не работает выдает ОШИБКУ !!!!!!
+    yearValue.value = new Date(Date.parse(time)).getFullYear();
     //обрабатывает время, превратит в к-во милисекунд что прошло с 1970 г., потом данные который мы получили используются для создания новой даты
     //еслм мы работаем с input-ами то мы используем value а не textContent
-    monthValue.value = new Date(Date.parse(time)).getMonth() +1; //+1 так счёт начинается с 0 
+    monthValue.value = new Date(Date.parse(time)).getMonth() +1; //+1 так как счёт начинается с 0 
     dayValue.value = new Date(Date.parse(time)).getDate(); //получим день текущего месяца
 });
 
 
-
+//обязательные расходы
 expensesBtn.addEventListener('click', function(){
     let sum = 0;
 
@@ -57,11 +58,10 @@ expensesBtn.addEventListener('click', function(){
 
 if ( (typeof(a))=== 'string' && (typeof(a)) != null && (typeof(b)) != null
 && a != '' && b != '' && a.length < 50) { 
-        console.log('done');
         appData.expenses[a] = b;
         sum += +b;
 }     else {
-     i=i-1;
+     i=i-1; 
   } 
 } 
 expensesValue.textContent = sum;
@@ -76,10 +76,10 @@ optionalExpensesBtn.addEventListener('click', function(){
 }
 });
 
+//необязательные расходы + дневной бюджет
 countBtn.addEventListener('click', function(){
-
-    if(appData.Budget != undefined){
-        appData.moneyPerDay = (appData.Budget / 30).toFixed();
+        if(appData.Budget != undefined){
+        appData.moneyPerDay = (appData.Budget/30).toFixed();
     dayBudgetValue.textContent = appData.moneyPerDay;
 
     if (appData.moneyPerDay < 100) {
@@ -121,9 +121,12 @@ sumValue.addEventListener('input', function() {
 
         appData.monthIncome = sum/100/12*percent;
         appData.yearIncome = sum/100*percent;
+        appData.dayIncome = (sum - expensesItem)/30;
         
         monthSavingsValue.textContent = appData.monthIncome.toFixed(1);
         yearSavingsValue.textContent = appData.yearIncome.toFixed(1);
+        
+
     }
 });
 
@@ -140,6 +143,10 @@ percentValue.addEventListener('input', function(){
     }
 });
 
+function check(){
+
+};
+
 let appData = {
     Budget: money,
     expenses: {},
@@ -147,12 +154,8 @@ let appData = {
     income: [],
     timeData: time,
     savings: false, 
-    
-      
-    
+     
 };
-for (let key in appData){
-    console.log("наша программа включает в себя", key);
-}
+
 
 
