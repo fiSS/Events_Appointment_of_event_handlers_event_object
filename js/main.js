@@ -1,6 +1,6 @@
 'use strict';
 let startBtn = document.getElementById('start'), //Получить кнопку "Начать расчет" через id
-budgetValue = document.getElementsByClassName('budget-value')[0],
+budgetValue = document.getElementsByClassName('budget-value'),
 dayBudgetValue = document.getElementsByClassName('daybudget-value')[0],
 levelValue = document.getElementsByClassName('level-value')[0],
 expensesValue = document.getElementsByClassName('expenses-value')[0],
@@ -14,6 +14,10 @@ yearSavingsValue = document.getElementsByClassName('yearsavings-value')[0],
 // expensesBtn = document.getElementsByTagName('button')[0], // Получить кнопки “Утвердить”  через Tag, каждую в своей переменной. 
 
 expensesItem = document.getElementsByClassName('expenses-item'),
+expensesItem0 = document.getElementsByClassName('expenses-item')[0],
+expensesItem1 = document.getElementsByClassName('expenses-item')[1],
+expensesItem2 = document.getElementsByClassName('expenses-item')[2],
+expensesItem3 = document.getElementsByClassName('expenses-item')[3],
 expensesBtn = document.getElementsByTagName('button')[0],
 optionalExpensesBtn = document.getElementsByTagName('button')[1],
 countBtn = document.getElementsByTagName('button')[2],
@@ -25,10 +29,11 @@ percentValue = document.querySelector('.choose-percent'),
 yearValue = document.querySelector('.year-value'),
 monthValue = document.querySelector('.month-value'),
 dayValue = document.querySelector('.day-value');
-console.log(expensesBtn);
+console.log(expensesItem);
 
 
 let money, time;
+
 let inputValue = ['', '' , '', ''];
 expensesBtn.disabled = true;
 expensesItem.forEach(function(inp, i) {
@@ -43,6 +48,8 @@ expensesItem.forEach(function(inp, i) {
     });
 
 });
+
+
 
 
 startBtn.addEventListener('click', function() {
@@ -90,26 +97,33 @@ optionalExpensesBtn.addEventListener('click', function(){
 }
 });
 
-//необязательные расходы + дневной бюджет
+//обязательные расходы + дневной бюджет
 countBtn.addEventListener('click', function(){
-        if(appData.Budget != undefined){
-        appData.moneyPerDay = (appData.Budget/30).toFixed();
-    dayBudgetValue.textContent = appData.moneyPerDay;
+    if(appData.Budget != undefined) {
 
-    if (appData.moneyPerDay < 100) {
-        levelValue.textContent = 'минимальный уровень достатка';
-    } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
-        levelValue.textContent =  'средний уровень достатка';
-    } else if (appData.moneyPerDay > 2000) {
-        levelValue.textContent = 'высокий уровень достатка';
-    } else {
-        levelValue.textContent = "произошла ошибка";
-    } 
+        let expenses = 0;
+        for (let prop in appData.expenses) {
+            expenses += parseFloat(appData.expenses[prop]); //Метод parseFloat преобразует строковый аргумент в число
+        }
+
+        appData.moneyPerDay = ((appData.Budget-expenses)/30).toFixed();
+        dayBudgetValue.textContent = appData.moneyPerDay;
+
+        if (appData.moneyPerDay < 100) {
+            levelValue.textContent = 'минимальный уровень достатка';
+        } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+            levelValue.textContent =  'средний уровень достатка';
+        } else if (appData.moneyPerDay > 2000) {
+            levelValue.textContent = 'высокий уровень достатка';
+        } else {
+            levelValue.textContent = "произошла ошибка";
+        } 
     }else {
         dayBudgetValue.textContent = "произошла ошибка";
     
-}
+    }
 });
+
 
 // Статья возможных доходов
 incomeItem.addEventListener('input', function() { //input отображается сразу на странице, change проявляется после того как кликаем за пределами строки ввода
