@@ -29,6 +29,20 @@ console.log(expensesBtn);
 
 
 let money, time;
+let inputValue = ['', '' , '', ''];
+expensesBtn.disabled = true;
+expensesItem.forEach(function(inp, i) {
+    inp.addEventListener('input', function(event){
+      inputVale[i] = event.target.value;
+      if (inputValue[0] !== '' && (inputValue[1] !== '' && inputValue[2] !== '' && inputValue[3] !== '') {
+          expensesBtn.disabled = false;
+      }
+      else {
+          expensesBtn.disabled = true;
+      }
+    });
+
+});
 
 
 startBtn.addEventListener('click', function() {
