@@ -29,17 +29,15 @@ percentValue = document.querySelector('.choose-percent'),
 yearValue = document.querySelector('.year-value'),
 monthValue = document.querySelector('.month-value'),
 dayValue = document.querySelector('.day-value');
-console.log(expensesItem);
-
 
 let money, time;
 
 let inputValue = ['', '' , '', ''];
 expensesBtn.disabled = true;
-expensesItem.forEach(function(item, i) {
+Array.from(expensesItem).forEach(function(item, i) {
     item.addEventListener('input', function(event){
       inputValue[i] = event.target.value;
-      if (inputValue[0] !== '' && (inputValue[1] !== '' && inputValue[2] !== '' && inputValue[3] !== '') {
+      if (inputValue[0] !== '' && (inputValue[1] !== '' && inputValue[2] !== '' && inputValue[3] !== '')){
           expensesBtn.disabled = false;
       }
       else {
@@ -49,7 +47,21 @@ expensesItem.forEach(function(item, i) {
 
 });
 
+optionalExpensesBtn.disabled = true;
+Array.from(optionalExpensesItem).forEach(function (item, i) {
+    item.addEventListener('input', function(event){
+        inputValue[i] = event.target.value;
+        if (inputValue[0] !== '' || inputValue[1] !== '' || inputValue[2] !== ''){
+            optionalExpensesBtn.disabled = false;
+        }
+        else {
+            optionalExpensesBtn.disabled = true;
+        }       
+    })
+})
 
+var start = true;
+countBtn.disabled = start;
 
 startBtn.addEventListener('click', function() {
     time = prompt("Введите дату в формате YYYY-MM-DD", '');
@@ -59,12 +71,14 @@ startBtn.addEventListener('click', function() {
     }
     appData.Budget = money;
     appData.timeData = time;
-    budgetValue.textContent = money.toFixed();
+    budgetValue[0].textContent = money.toFixed();
     yearValue.value = new Date(Date.parse(time)).getFullYear();
     //обрабатывает время, превратит в к-во милисекунд что прошло с 1970 г., потом данные который мы получили используются для создания новой даты
     //еслм мы работаем с input-ами то мы используем value а не textContent
     monthValue.value = new Date(Date.parse(time)).getMonth() +1; //+1 так как счёт начинается с 0 
     dayValue.value = new Date(Date.parse(time)).getDate(); //получим день текущего месяца
+    // делаем кнопку расчитать активной
+    countBtn.disabled = false;
 });
 
 
@@ -183,6 +197,3 @@ let appData = {
     savings: false, 
      
 };
-
-
-
